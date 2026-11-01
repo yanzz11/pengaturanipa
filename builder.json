@@ -1,0 +1,21 @@
+{
+  "project": "proyek-ipa",
+  "platform": "ios",
+  "github": {
+    "owner": "yanzz11",
+    "repo": "pengaturanipa"
+  },
+  "provider": "github",
+  "codemagic": {},
+  "bitrise": {},
+  "ios": {
+    "path": "platforms/ios",
+    "bundleId": "com.yanzz11.webvpn"
+  },
+  "flutter": {
+    "watch": {}
+  },
+  "reactNative": {},
+  "kmp": {},
+  "mobai": {}
+}
