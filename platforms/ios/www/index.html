@@ -2,164 +2,195 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Manajemen VPN & Perangkat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Manajemen VPN</title>
     <style>
         /* Reset & Pengaturan Dasar */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #000000; /* Latar belakang hitam pekat iOS */
+            background-color: #000000;
             color: #ffffff;
+            padding: 0 16px;
+            padding-top: max(env(safe-area-inset-top, 20px), 60px); 
             height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        /* Bagian Header (Tombol Back & Judul) */
+        /* --- HEADER --- */
         .header {
             display: flex;
             align-items: center;
-            padding: 20px 16px;
+            margin-bottom: 30px;
             position: relative;
+            height: 40px;
         }
 
-        .back-btn {
+        .back-button {
+            width: 38px;
+            height: 38px;
             background-color: #1c1c1e;
-            color: #ffffff;
-            width: 36px;
-            height: 36px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 18px;
-            cursor: pointer;
+            position: absolute;
+            left: 0;
+            z-index: 2;
         }
 
-        /* Membuat icon panah menggunakan CSS */
-        .back-btn::before {
+        /* Panah kiri */
+        .back-button::before {
             content: '';
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            display: inline-block;
-            padding: 4px;
-            transform: rotate(135deg);
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-left: 2.5px solid #ffffff;
+            border-bottom: 2.5px solid #ffffff;
+            transform: rotate(45deg);
             margin-left: 4px;
         }
 
         .header-title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 17px;
+            width: 100%;
+            text-align: center;
+            font-size: 19px;
             font-weight: 600;
+            letter-spacing: -0.5px;
+            margin: 0 45px;
         }
 
-        /* Area Konten */
-        .content {
-            padding: 10px 16px;
+        /* --- GRUP MENU --- */
+        .menu-group {
+            background-color: #1c1c1e;
+            border-radius: 22px; 
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .menu-item {
             display: flex;
-            flex-direction: column;
-            gap: 20px; /* Jarak antar kotak menu */
-        }
-
-        /* Desain Kotak Menu (List Item) */
-        .list-item {
-            background-color: #1c1c1e; /* Warna abu-abu gelap iOS */
-            border-radius: 14px; /* Sudut membulat */
+            align-items: center;
             padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            text-decoration: none;
+            color: #ffffff;
+            position: relative;
         }
 
-        .list-item-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* Ikon Bumi (VPN) */
+        /* --- IKON VPN (BUMI BIRU DI HITAM) --- */
         .icon-vpn {
-            background-color: #000000;
-            border: 1px solid #333;
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            background-color: #000000; 
+            border: 1px solid #2c2c2e; 
+            border-radius: 9px; 
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 16px;
+            margin-right: 14px;
+            flex-shrink: 0;
         }
 
-        .item-text {
-            font-size: 16px;
+        /* SVG Garis Bumi Biru */
+        .icon-vpn svg {
+            width: 24px;
+            height: 24px;
+            stroke: #0a84ff; 
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        /* Teks Status (Tidak Terhubung) */
-        .item-status {
-            color: #8e8e93; /* Warna teks abu-abu */
-            font-size: 16px;
+        /* --- TEKS --- */
+        .menu-text {
+            flex-grow: 1;
+            font-size: 17px;
+            letter-spacing: -0.4px;
+        }
+
+        .menu-status {
+            color: #8e8e93;
+            font-size: 17px;
+            letter-spacing: -0.4px;
             display: flex;
             align-items: center;
-            gap: 6px;
         }
 
-        /* Panah Kanan (Chevron) */
-        .chevron {
-            border: solid #8e8e93;
-            border-width: 0 2px 2px 0;
+        /* Panah Kanan (>) */
+        .chevron::after {
+            content: '';
             display: inline-block;
-            padding: 3px;
-            transform: rotate(-45deg);
-            margin-left: 4px;
+            width: 8px;
+            height: 8px;
+            border-top: 2.5px solid #5c5c5e;
+            border-right: 2.5px solid #5c5c5e;
+            transform: rotate(45deg);
+            margin-left: 10px;
+            margin-bottom: 2px;
         }
 
-        /* Desain tombol teks biru (Masuk ke akun...) */
-        .text-button {
-            background-color: #1c1c1e;
-            border-radius: 14px;
-            padding: 14px 16px;
-            color: #0a84ff; /* Biru khas iOS */
-            font-size: 16px;
-            cursor: pointer;
+        .text-blue {
+            color: #0a84ff;
+            font-size: 17px;
+            letter-spacing: -0.4px;
+        }
+
+        .menu-item:active {
+            background-color: #2c2c2e;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- HEADER -->
     <div class="header">
-        <div class="back-btn"></div>
+        <div class="back-button" onclick="history.back()"></div>
         <div class="header-title">Manajemen VPN & Perangkat</div>
     </div>
 
-    <!-- Konten Menu -->
-    <div class="content">
-        
-        <!-- Menu VPN -->
-        <div class="list-item">
-            <div class="list-item-left">
-                <!-- Icon menggunakan emoji atau SVG, di sini pakai emoji bola dunia -->
-                <div class="icon-vpn">🌐</div>
-                <div class="item-text">VPN</div>
+    <!-- MENU 1 -->
+    <div class="menu-group">
+        <a href="#" class="menu-item">
+            <div class="icon-vpn">
+                <!-- SVG Bumi Bertangkai (Garis Biru, Kaki Lebih Panjang) -->
+                <svg viewBox="0 0 24 24">
+                    <!-- Lingkaran Bumi -->
+                    <circle cx="12" cy="10.5" r="7"></circle>
+                    <!-- Garis Vertikal Bumi -->
+                    <path d="M12 3.5v14"></path>
+                    <!-- Garis Horizontal Bumi -->
+                    <path d="M5 10.5h14"></path>
+                    <!-- Lengkungan Bumi Kiri -->
+                    <path d="M12 3.5a10 10 0 0 0 0 14"></path>
+                    <!-- Lengkungan Bumi Kanan -->
+                    <path d="M12 3.5a10 10 0 0 1 0 14"></path>
+                    <!-- Tangkai Bawah (Lebih Panjang) -->
+                    <path d="M12 17.5v3"></path>
+                    <!-- Garis Horizontal Bawah -->
+                    <path d="M8.5 20.5h7"></path>
+                    <!-- Titik di Tengah Tangkai -->
+                    <circle cx="12" cy="20.5" r="1.2" fill="#0a84ff" stroke="none"></circle>
+                </svg>
             </div>
-            <div class="item-status">
-                Tidak Terhubung <div class="chevron"></div>
-            </div>
-        </div>
+            <div class="menu-text">VPN</div>
+            <div class="menu-status chevron">Tidak Terhubung</div>
+        </a>
+    </div>
 
-        <!-- Tombol Akun Kantor/Sekolah -->
-        <div class="text-button">
-            Masuk ke Akun Kantor atau Sekolah...
-        </div>
-
+    <!-- MENU 2 -->
+    <div class="menu-group">
+        <a href="#" class="menu-item">
+            <div class="menu-text text-blue">Masuk ke Akun Kantor atau Sekolah...</div>
+        </a>
     </div>
 
 </body>
