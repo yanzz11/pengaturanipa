@@ -29,7 +29,7 @@
         <param name="ios-package" value="CDVStatusBarInternal" />
         <param name="onload" value="true" />
     </feature>
-    <name>WebVPN</name>
+    <name>Pengaturan</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
@@ -39,6 +39,7 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <icon src="www\img\logo.png" />
     <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="DisallowOverscroll" value="false" />
     <preference name="EnableViewportScale" value="false" />
