@@ -1,50 +1,166 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manajemen VPN & Perangkat</title>
+    <style>
+        /* Reset & Pengaturan Dasar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-    http://www.apache.org/licenses/LICENSE-2.0
+        body {
+            background-color: #000000; /* Latar belakang hitam pekat iOS */
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
-            https://cordova.apache.org/docs/en/latest/
-        Some notes:
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+        /* Bagian Header (Tombol Back & Judul) */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px 16px;
+            position: relative;
+        }
+
+        .back-btn {
+            background-color: #1c1c1e;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Membuat icon panah menggunakan CSS */
+        .back-btn::before {
+            content: '';
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            transform: rotate(135deg);
+            margin-left: 4px;
+        }
+
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        /* Area Konten */
+        .content {
+            padding: 10px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Jarak antar kotak menu */
+        }
+
+        /* Desain Kotak Menu (List Item) */
+        .list-item {
+            background-color: #1c1c1e; /* Warna abu-abu gelap iOS */
+            border-radius: 14px; /* Sudut membulat */
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .list-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Ikon Bumi (VPN) */
+        .icon-vpn {
+            background-color: #000000;
+            border: 1px solid #333;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .item-text {
+            font-size: 16px;
+        }
+
+        /* Teks Status (Tidak Terhubung) */
+        .item-status {
+            color: #8e8e93; /* Warna teks abu-abu */
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Panah Kanan (Chevron) */
+        .chevron {
+            border: solid #8e8e93;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(-45deg);
+            margin-left: 4px;
+        }
+
+        /* Desain tombol teks biru (Masuk ke akun...) */
+        .text-button {
+            background-color: #1c1c1e;
+            border-radius: 14px;
+            padding: 14px 16px;
+            color: #0a84ff; /* Biru khas iOS */
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="back-btn"></div>
+        <div class="header-title">Manajemen VPN & Perangkat</div>
+    </div>
+
+    <!-- Konten Menu -->
+    <div class="content">
+        
+        <!-- Menu VPN -->
+        <div class="list-item">
+            <div class="list-item-left">
+                <!-- Icon menggunakan emoji atau SVG, di sini pakai emoji bola dunia -->
+                <div class="icon-vpn">🌐</div>
+                <div class="item-text">VPN</div>
+            </div>
+            <div class="item-status">
+                Tidak Terhubung <div class="chevron"></div>
             </div>
         </div>
-        <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
-    </body>
+
+        <!-- Tombol Akun Kantor/Sekolah -->
+        <div class="text-button">
+            Masuk ke Akun Kantor atau Sekolah...
+        </div>
+
+    </div>
+
+</body>
 </html>

@@ -1,135 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>55five — 3 Kolom</title>
-  <style>
-    body { font-family: monospace; padding: 15px; background: #111; color: #0f0; margin: 0; }
-    h1 { color: #f00; margin: 5px 0; font-size: 16px; }
-    #status { color: #ff0; margin: 3px 0; font-size: 12px; }
-    #info { color: #0ff; margin: 3px 0; font-size: 12px; }
-    .wrap { display: flex; gap: 30px; margin-top: 10px; flex-wrap: wrap; }
-    .col { min-width: 100px; }
-    .col-title { color: #ff0; margin-bottom: 5px; font-size: 14px; border-bottom: 1px solid #333; }
-    .item { font-size: 28px; font-weight: bold; padding: 2px 0; line-height: 1.2; }
-    .big { color: #0f0; }
-    .small { color: #f66; }
-    button { padding: 5px 10px; font-size: 12px; cursor: pointer; margin: 3px 0; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manajemen VPN & Perangkat</title>
+    <style>
+        /* Reset & Pengaturan Dasar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000000; /* Latar belakang hitam pekat iOS */
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Bagian Header (Tombol Back & Judul) */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px 16px;
+            position: relative;
+        }
+
+        .back-btn {
+            background-color: #1c1c1e;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Membuat icon panah menggunakan CSS */
+        .back-btn::before {
+            content: '';
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            transform: rotate(135deg);
+            margin-left: 4px;
+        }
+
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        /* Area Konten */
+        .content {
+            padding: 10px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Jarak antar kotak menu */
+        }
+
+        /* Desain Kotak Menu (List Item) */
+        .list-item {
+            background-color: #1c1c1e; /* Warna abu-abu gelap iOS */
+            border-radius: 14px; /* Sudut membulat */
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .list-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Ikon Bumi (VPN) */
+        .icon-vpn {
+            background-color: #000000;
+            border: 1px solid #333;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .item-text {
+            font-size: 16px;
+        }
+
+        /* Teks Status (Tidak Terhubung) */
+        .item-status {
+            color: #8e8e93; /* Warna teks abu-abu */
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Panah Kanan (Chevron) */
+        .chevron {
+            border: solid #8e8e93;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(-45deg);
+            margin-left: 4px;
+        }
+
+        /* Desain tombol teks biru (Masuk ke akun...) */
+        .text-button {
+            background-color: #1c1c1e;
+            border-radius: 14px;
+            padding: 14px 16px;
+            color: #0a84ff; /* Biru khas iOS */
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <h1>🎯 55five — 3 Kolom</h1>
-  <div id="status">⏳ Loading...</div>
-  <div id="info"></div>
-  <button onclick="loadData()">🔄 Refresh</button>
-  <div id="content"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-  <script>
-    async function fetchPage(pageNo) {
-      const r = () => 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, c => {
-        const x = Math.floor(Math.random() * 16);
-        return (c === 'x' ? x : (x & 3 | 8)).toString(16);
-      });
+    <!-- Header -->
+    <div class="header">
+        <div class="back-btn"></div>
+        <div class="header-title">Manajemen VPN & Perangkat</div>
+    </div>
 
-      const body = {
-        pageSize: 10,
-        pageNo: pageNo,
-        typeId: 1,
-        language: 1,
-        random: r()
-      };
+    <!-- Konten Menu -->
+    <div class="content">
+        
+        <!-- Menu VPN -->
+        <div class="list-item">
+            <div class="list-item-left">
+                <!-- Icon menggunakan emoji atau SVG, di sini pakai emoji bola dunia -->
+                <div class="icon-vpn">🌐</div>
+                <div class="item-text">VPN</div>
+            </div>
+            <div class="item-status">
+                Tidak Terhubung <div class="chevron"></div>
+            </div>
+        </div>
 
-      const sorted = {};
-      Object.keys(body).sort().forEach(k => {
-        if (body[k] !== null && body[k] !== '') sorted[k] = body[k];
-      });
-      body.signature = CryptoJS.MD5(JSON.stringify(sorted)).toString().toUpperCase();
-      body.timestamp = Math.floor(Date.now() / 1000);
+        <!-- Tombol Akun Kantor/Sekolah -->
+        <div class="text-button">
+            Masuk ke Akun Kantor atau Sekolah...
+        </div>
 
-      const res = await fetch('https://api.55fiveapi.com/api/webapi/GetNoaverageEmerdList', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
+    </div>
 
-      const json = await res.json();
-      if (json.code !== 0) return { error: json.msg, list: [] };
-      return { error: null, list: json.data.list || [] };
-    }
-
-    async function loadData() {
-      const status = document.getElementById('status');
-      const content = document.getElementById('content');
-      const info = document.getElementById('info');
-
-      status.textContent = '⏳ Ambil data...';
-      content.innerHTML = '';
-      info.textContent = '';
-
-      let all = [];
-      let pages = 0;
-      const TARGET_PAGES = 15;
-
-      for (let p = 1; p <= TARGET_PAGES; p++) {
-        status.textContent = '⏳ Halaman ' + p + ' / ' + TARGET_PAGES + '...';
-        try {
-          const out = await fetchPage(p);
-
-          if (out.error) {
-            status.textContent = '⛔ Page ' + p + ' error: ' + out.error;
-            break;
-          }
-
-          if (out.list.length === 0) {
-            status.textContent = '⛔ Page ' + p + ' kosong — stop.';
-            break;
-          }
-
-          all = all.concat(out.list);
-          pages++;
-
-          await new Promise(r => setTimeout(r, 300));
-        } catch (e) {
-          status.textContent = '❌ Error: ' + e.message;
-          break;
-        }
-      }
-
-      const nums = all
-        .map(x => Number(x.number))
-        .filter(n => Number.isInteger(n) && n >= 0 && n <= 9);
-
-      status.textContent = '✅ ' + nums.length + ' angka dari ' + pages + ' halaman';
-      info.textContent = '📊 Total: ' + nums.length + ' | Target: 150';
-
-      if (nums.length === 0) {
-        content.textContent = 'Tidak ada data.';
-        return;
-      }
-
-      // 3 kolom — tanpa nomor urut, angka digedein
-      let html = '<div class="wrap">';
-      for (let i = 0; i < nums.length; i += 10) {
-        const group = nums.slice(i, i + 10);
-        const pageNum = Math.floor(i / 10) + 1;
-        html += '<div class="col">';
-        html += '<div class="col-title">Halaman ' + pageNum + '</div>';
-        group.forEach(n => {
-          const isBig = n >= 5;
-          html += '<div class="item ' + (isBig ? 'big' : 'small') + '">' + n + '</div>';
-        });
-        html += '</div>';
-      }
-      html += '</div>';
-
-      content.innerHTML = html;
-    }
-
-    loadData();
-  </script>
 </body>
 </html>
