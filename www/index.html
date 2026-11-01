@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>55five — 3 Kolom</title>
+  <style>
+    body { font-family: monospace; padding: 15px; background: #111; color: #0f0; margin: 0; }
+    h1 { color: #f00; margin: 5px 0; font-size: 16px; }
+    #status { color: #ff0; margin: 3px 0; font-size: 12px; }
+    #info { color: #0ff; margin: 3px 0; font-size: 12px; }
+    .wrap { display: flex; gap: 30px; margin-top: 10px; flex-wrap: wrap; }
+    .col { min-width: 100px; }
+    .col-title { color: #ff0; margin-bottom: 5px; font-size: 14px; border-bottom: 1px solid #333; }
+    .item { font-size: 28px; font-weight: bold; padding: 2px 0; line-height: 1.2; }
+    .big { color: #0f0; }
+    .small { color: #f66; }
+    button { padding: 5px 10px; font-size: 12px; cursor: pointer; margin: 3px 0; }
+  </style>
+</head>
+<body>
+  <h1>🎯 55five — 3 Kolom</h1>
+  <div id="status">⏳ Loading...</div>
+  <div id="info"></div>
+  <button onclick="loadData()">🔄 Refresh</button>
+  <div id="content"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script>
+    async function fetchPage(pageNo) {
+      const r = () => 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const x = Math.floor(Math.random() * 16);
+        return (c === 'x' ? x : (x & 3 | 8)).toString(16);
+      });
+
+      const body = {
+        pageSize: 10,
+        pageNo: pageNo,
+        typeId: 1,
+        language: 1,
+        random: r()
+      };
+
+      const sorted = {};
+      Object.keys(body).sort().forEach(k => {
+        if (body[k] !== null && body[k] !== '') sorted[k] = body[k];
+      });
+      body.signature = CryptoJS.MD5(JSON.stringify(sorted)).toString().toUpperCase();
+      body.timestamp = Math.floor(Date.now() / 1000);
+
+      const res = await fetch('https://api.55fiveapi.com/api/webapi/GetNoaverageEmerdList', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      const json = await res.json();
+      if (json.code !== 0) return { error: json.msg, list: [] };
+      return { error: null, list: json.data.list || [] };
+    }
+
+    async function loadData() {
+      const status = document.getElementById('status');
+      const content = document.getElementById('content');
+      const info = document.getElementById('info');
+
+      status.textContent = '⏳ Ambil data...';
+      content.innerHTML = '';
+      info.textContent = '';
+
+      let all = [];
+      let pages = 0;
+      const TARGET_PAGES = 15;
+
+      for (let p = 1; p <= TARGET_PAGES; p++) {
+        status.textContent = '⏳ Halaman ' + p + ' / ' + TARGET_PAGES + '...';
+        try {
+          const out = await fetchPage(p);
+
+          if (out.error) {
+            status.textContent = '⛔ Page ' + p + ' error: ' + out.error;
+            break;
+          }
+
+          if (out.list.length === 0) {
+            status.textContent = '⛔ Page ' + p + ' kosong — stop.';
+            break;
+          }
+
+          all = all.concat(out.list);
+          pages++;
+
+          await new Promise(r => setTimeout(r, 300));
+        } catch (e) {
+          status.textContent = '❌ Error: ' + e.message;
+          break;
+        }
+      }
+
+      const nums = all
+        .map(x => Number(x.number))
+        .filter(n => Number.isInteger(n) && n >= 0 && n <= 9);
+
+      status.textContent = '✅ ' + nums.length + ' angka dari ' + pages + ' halaman';
+      info.textContent = '📊 Total: ' + nums.length + ' | Target: 150';
+
+      if (nums.length === 0) {
+        content.textContent = 'Tidak ada data.';
+        return;
+      }
+
+      // 3 kolom — tanpa nomor urut, angka digedein
+      let html = '<div class="wrap">';
+      for (let i = 0; i < nums.length; i += 10) {
+        const group = nums.slice(i, i + 10);
+        const pageNum = Math.floor(i / 10) + 1;
+        html += '<div class="col">';
+        html += '<div class="col-title">Halaman ' + pageNum + '</div>';
+        group.forEach(n => {
+          const isBig = n >= 5;
+          html += '<div class="item ' + (isBig ? 'big' : 'small') + '">' + n + '</div>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+
+      content.innerHTML = html;
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
